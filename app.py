@@ -6,96 +6,97 @@ from PIL import Image
 import numpy as np
 import cv2
 from io import BytesIO
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
+from datetime import datetime
 
 st.set_page_config(page_title="ThermaVision AI", layout="wide")
 
 st.markdown("""
 <style>
 .stApp {
-    background:
-    radial-gradient(circle at 15% 15%, rgba(0,255,255,0.25), transparent 20%),
-    radial-gradient(circle at 85% 20%, rgba(167,139,250,0.25), transparent 22%),
-    linear-gradient(135deg, #020617, #02001f, #000000);
+    background: linear-gradient(135deg, #020617, #02001f, #000000);
     color: white;
 }
 .hero {
-    min-height: 430px;
-    border-radius: 32px;
-    padding: 45px;
-    background:
-    linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.65)),
+    padding: 35px;
+    border-radius: 25px;
+    background: linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.70)),
     url("https://images.unsplash.com/photo-1446776811953-b23d57bd21aa");
     background-size: cover;
     background-position: center;
-    box-shadow: 0 0 60px rgba(0,255,255,.35);
     border: 1px solid rgba(0,255,255,.35);
+    box-shadow: 0 0 50px rgba(0,255,255,.25);
 }
 .title {
-    font-size: 68px;
+    font-size: 55px;
     font-weight: 900;
-    margin-top: 45px;
-    background: linear-gradient(90deg,#00eaff,#ffffff,#a78bfa);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #00eaff;
 }
-.subtitle {
-    font-size: 24px;
-    max-width: 850px;
-}
-.glass {
-    padding: 24px;
-    border-radius: 24px;
+.card {
+    padding: 20px;
+    border-radius: 18px;
     background: rgba(255,255,255,.08);
-    border: 1px solid rgba(255,255,255,.20);
-    box-shadow: 0 20px 60px rgba(0,0,0,.45);
-    margin-top: 20px;
-}
-.feature {
-    padding: 22px;
-    border-radius: 22px;
-    background: linear-gradient(135deg, rgba(0,234,255,.15), rgba(139,92,246,.14));
-    border: 1px solid rgba(0,234,255,.30);
-    min-height: 150px;
-}
-.moon {
-    font-size: 95px;
-    text-align: right;
+    border: 1px solid rgba(255,255,255,.18);
 }
 </style>
 """, unsafe_allow_html=True)
 
 st.markdown("""
 <div class="hero">
-    <div class="moon">🌕 🛰️</div>
-    <div class="title">ThermaVision AI</div>
-    <div class="subtitle">
-        A space-inspired infrared intelligence platform that transforms thermal images
-        into enhanced mission-ready visual outputs.
-    </div>
-    <br>
-    <b>Mission Use:</b> Satellite Monitoring • Night Rescue • Surveillance • Disaster Response
+    <div class="title">🛰️ ThermaVision AI</div>
+    <h3>Infrared Image Enhancement + Thermal Hotspot Detection</h3>
+    <p>For rescue, surveillance, satellite thermal analysis and disaster response.</p>
 </div>
 """, unsafe_allow_html=True)
 
-st.markdown("## 🌌 Mission Control")
-
-c1, c2, c3 = st.columns(3)
-with c1:
-    st.markdown('<div class="feature"><h3>🛰 Satellite Vision</h3><p>Analyze infrared frames captured from remote sensing systems.</p></div>', unsafe_allow_html=True)
-with c2:
-    st.markdown('<div class="feature"><h3>🌙 Night Intelligence</h3><p>Improve visibility in low-light and thermal scenes.</p></div>', unsafe_allow_html=True)
-with c3:
-    st.markdown('<div class="feature"><h3>🚨 Rescue Assist</h3><p>Support emergency teams with clearer thermal visualization.</p></div>', unsafe_allow_html=True)
-
-st.markdown('<div class="glass">', unsafe_allow_html=True)
-st.markdown("## 🔥 Infrared Image Processing Lab")
+st.write("")
 
 mode = st.selectbox(
-    "Select Mission Type",
-    ["Lunar Thermal Scan", "Satellite Thermal Analysis", "Disaster Rescue Scan", "Night Surveillance Scan"]
+    "Select Mission Mode",
+    ["Disaster Rescue Scan", "Satellite Thermal Analysis", "Night Surveillance Scan", "Lunar Thermal Scan"]
 )
 
-uploaded_file = st.file_uploader("Upload Infrared / Thermal Image", type=["jpg", "jpeg", "png"])
+uploaded_file = st.file_uploader("Upload Thermal / Infrared Image", type=["jpg", "jpeg", "png"])
+
+
+def create_pdf_report(mode, hotspot_count, risk_level, max_area, recommendation):
+    buffer = BytesIO()
+    pdf = canvas.Canvas(buffer, pagesize=A4)
+
+    pdf.setTitle("ThermaVision AI Report")
+    pdf.setFont("Helvetica-Bold", 20)
+    pdf.drawString(70, 780, "ThermaVision AI - Mission Report")
+
+    pdf.setFont("Helvetica", 12)
+    pdf.drawString(70, 740, f"Date & Time: {datetime.now().strftime('%d-%m-%Y %H:%M:%S')}")
+    pdf.drawString(70, 715, f"Mission Mode: {mode}")
+    pdf.drawString(70, 690, f"Hotspots Detected: {hotspot_count}")
+    pdf.drawString(70, 665, f"Maximum Hotspot Area: {max_area}")
+    pdf.drawString(70, 640, f"Risk Level: {risk_level}")
+
+    pdf.setFont("Helvetica-Bold", 14)
+    pdf.drawString(70, 600, "AI Analysis Summary:")
+
+    pdf.setFont("Helvetica", 12)
+    text = pdf.beginText(70, 575)
+    text.textLines(f"""
+The uploaded infrared image was processed using thermal enhancement and hotspot detection.
+Bright thermal regions were identified and highlighted using bounding boxes.
+This report can support mission teams in quick visual understanding of thermal activity.
+
+Recommendation:
+{recommendation}
+""")
+    pdf.drawText(text)
+
+    pdf.setFont("Helvetica-Oblique", 10)
+    pdf.drawString(70, 80, "Generated by ThermaVision AI - Student Prototype")
+
+    pdf.save()
+    buffer.seek(0)
+    return buffer
+
 
 if uploaded_file:
     image = Image.open(uploaded_file).convert("RGB")
@@ -104,78 +105,93 @@ if uploaded_file:
     gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
     gray = cv2.equalizeHist(gray)
 
-    colorized = cv2.applyColorMap(gray, cv2.COLORMAP_TURBO)
-    colorized = cv2.cvtColor(colorized, cv2.COLOR_BGR2RGB)
+    enhanced = cv2.applyColorMap(gray, cv2.COLORMAP_TURBO)
+    enhanced = cv2.cvtColor(enhanced, cv2.COLOR_BGR2RGB)
+
+    threshold_value = st.slider("Hotspot Sensitivity", 150, 250, 200)
+
+    _, thresh = cv2.threshold(gray, threshold_value, 255, cv2.THRESH_BINARY)
+    contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    result = enhanced.copy()
+    hotspot_count = 0
+    max_area = 0
+
+    for cnt in contours:
+        area = cv2.contourArea(cnt)
+        if area > 80:
+            x, y, w, h = cv2.boundingRect(cnt)
+            cv2.rectangle(result, (x, y), (x + w, y + h), (255, 255, 255), 3)
+            cv2.putText(result, "HOTSPOT", (x, y - 10),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
+            hotspot_count += 1
+            max_area = max(max_area, int(area))
+
+    if hotspot_count >= 5:
+        risk_level = "High"
+        recommendation = "Immediate attention required. Multiple strong thermal regions detected."
+    elif hotspot_count >= 2:
+        risk_level = "Medium"
+        recommendation = "Thermal activity found. Manual verification is recommended."
+    elif hotspot_count == 1:
+        risk_level = "Low"
+        recommendation = "Single hotspot found. Monitor the region if needed."
+    else:
+        risk_level = "Safe"
+        recommendation = "No major hotspot detected."
 
     col1, col2 = st.columns(2)
 
     with col1:
-        st.subheader("📡 Raw Infrared Input")
+        st.markdown('<div class="card">', unsafe_allow_html=True)
+        st.subheader("📡 Original Input")
         st.image(image, use_container_width=True)
+        st.markdown('</div>', unsafe_allow_html=True)
 
     with col2:
-        st.subheader("🧠 Enhanced Thermal Output")
-        st.image(colorized, use_container_width=True)
+        st.markdown('<div class="card">', unsafe_allow_html=True)
+        st.subheader("🔥 AI Hotspot Detection Output")
+        st.image(result, use_container_width=True)
+        st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown("## 📊 AI Mission Report")
 
-    if mode == "Lunar Thermal Scan":
-        st.subheader("🌕 Lunar Surface Analysis")
-        st.success("Lunar thermal anomalies detected.")
-        st.info("Possible crater hotspot regions identified.")
-        alert = "Scientific"
+    r1, r2, r3, r4 = st.columns(4)
+    r1.metric("Mission Mode", mode)
+    r2.metric("Hotspots Found", hotspot_count)
+    r3.metric("Risk Level", risk_level)
+    r4.metric("Max Area", max_area)
 
+    if mode == "Disaster Rescue Scan":
+        st.warning("Use: Fire zones, trapped person heat signatures, rescue priority areas.")
     elif mode == "Satellite Thermal Analysis":
-        st.subheader("🛰️ Satellite Thermal Mapping")
-        st.success("Thermal terrain analysis completed.")
-        st.info("High temperature regions detected.")
-        alert = "Moderate"
-
-    elif mode == "Disaster Rescue Scan":
-        st.subheader("🚨 Disaster Rescue Report")
-        st.success("Rescue priority analysis completed.")
-        st.warning("Possible human heat signatures found.")
-        alert = "High"
-
+        st.info("Use: Heat islands, land surface temperature zones, remote sensing.")
+    elif mode == "Night Surveillance Scan":
+        st.warning("Use: Human/vehicle thermal activity in low-light conditions.")
     else:
-        st.subheader("🌙 Night Surveillance Report")
-        st.success("Night surveillance scan completed.")
-        st.info("Suspicious thermal activity detected.")
-        alert = "Medium"
+        st.info("Use: Lunar surface thermal variation and hotspot study.")
 
-    r1, r2, r3 = st.columns(3)
-    r1.metric("Clarity Boost", "92%")
-    r2.metric("Alert Level", alert)
-    r3.metric("Status", "Processed")
+    st.success(recommendation)
 
-    result_img = Image.fromarray(colorized)
-    buffer = BytesIO()
-    result_img.save(buffer, format="PNG")
+    result_img = Image.fromarray(result)
+    img_buffer = BytesIO()
+    result_img.save(img_buffer, format="PNG")
 
     st.download_button(
-        "⬇ Download Enhanced Mission Output",
-        buffer.getvalue(),
+        "⬇ Download Processed Image",
+        img_buffer.getvalue(),
         "thermavision_output.png",
         "image/png"
     )
 
+    pdf_buffer = create_pdf_report(mode, hotspot_count, risk_level, max_area, recommendation)
+
+    st.download_button(
+        "📄 Download PDF Mission Report",
+        pdf_buffer,
+        "thermavision_report.pdf",
+        "application/pdf"
+    )
+
 else:
-    st.info("Upload a thermal image to start the mission scan.")
-
-st.markdown('</div>', unsafe_allow_html=True)
-
-st.markdown("""
-<div class="glass">
-<h2>👥 Mission Team</h2>
-<p><b>Team Name:</b> AstroVision Coders</p>
-<p><b>Project Lead:</b> Vishal Kumar</p>
-<p><b>Domain:</b> AI • Image Processing • Remote Sensing</p>
-</div>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-<center>
-<br>
-<p>© 2026 ThermaVision AI | Space-Inspired Infrared Intelligence Platform</p>
-</center>
-""", unsafe_allow_html=True)
+    st.info("Upload a thermal image to start analysis.")
