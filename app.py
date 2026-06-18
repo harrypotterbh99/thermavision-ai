@@ -12,73 +12,88 @@ st.set_page_config(page_title="ThermaVision AI", layout="wide")
 st.markdown("""
 <style>
 .stApp {
-    background: linear-gradient(135deg, #020617, #07142f, #000000);
+    background:
+    radial-gradient(circle at 15% 15%, rgba(0,255,255,0.25), transparent 20%),
+    radial-gradient(circle at 85% 20%, rgba(167,139,250,0.25), transparent 22%),
+    radial-gradient(circle at 75% 75%, rgba(255,255,255,0.12), transparent 14%),
+    linear-gradient(135deg, #020617, #02001f, #000000);
     color: white;
 }
 .hero {
+    min-height: 430px;
+    border-radius: 32px;
     padding: 45px;
-    border-radius: 30px;
-    background: linear-gradient(135deg, rgba(0,245,255,.15), rgba(139,92,246,.12));
-    border: 1px solid rgba(0,245,255,.35);
-    box-shadow: 0 0 40px rgba(0,245,255,.25);
-    text-align: center;
+    background:
+    linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.65)),
+    url("https://images.unsplash.com/photo-1446776811953-b23d57bd21aa");
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 0 60px rgba(0,255,255,.35);
+    border: 1px solid rgba(0,255,255,.35);
 }
 .title {
-    font-size: 58px;
+    font-size: 68px;
     font-weight: 900;
-    background: linear-gradient(90deg,#00f5ff,#ffffff,#a78bfa);
+    margin-top: 45px;
+    background: linear-gradient(90deg,#00eaff,#ffffff,#a78bfa);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
-.section {
-    padding: 25px;
-    border-radius: 22px;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.18);
+.subtitle {
+    font-size: 24px;
+    max-width: 850px;
+}
+.glass {
+    padding: 24px;
+    border-radius: 24px;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.20);
+    box-shadow: 0 20px 60px rgba(0,0,0,.45);
     margin-top: 20px;
 }
-.card {
-    padding: 20px;
-    border-radius: 18px;
-    background: rgba(0,0,0,0.35);
-    border: 1px solid rgba(0,245,255,.25);
+.feature {
+    padding: 22px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, rgba(0,234,255,.15), rgba(139,92,246,.14));
+    border: 1px solid rgba(0,234,255,.30);
+    min-height: 150px;
+}
+.moon {
+    font-size: 95px;
+    text-align: right;
 }
 </style>
 """, unsafe_allow_html=True)
 
 st.markdown("""
 <div class="hero">
-    <div class="title">🛰️ ThermaVision AI</div>
-    <h3>AI-Powered Infrared Image Intelligence Platform</h3>
-    <p>For space observation, rescue operations, surveillance and disaster response.</p>
+    <div class="moon">🌕 🛰️</div>
+    <div class="title">ThermaVision AI</div>
+    <div class="subtitle">
+        A space-inspired infrared intelligence platform that transforms thermal images
+        into enhanced mission-ready visual outputs.
+    </div>
+    <br>
+    <b>Mission Use:</b> Satellite Monitoring • Night Rescue • Surveillance • Disaster Response
 </div>
 """, unsafe_allow_html=True)
 
-st.markdown("""
-<div class="section">
-<h2>🚀 About Project</h2>
-<p>
-ThermaVision AI is a thermal image analysis platform that converts infrared/thermal images
-into enhanced human-friendly visual outputs. The system helps users understand thermal scenes
-better for rescue, surveillance and remote sensing applications.
-</p>
-</div>
-""", unsafe_allow_html=True)
+st.markdown("## 🌌 Mission Control")
 
-st.markdown("## 🔥 Key Features")
 c1, c2, c3 = st.columns(3)
 with c1:
-    st.markdown('<div class="card"><h3>Thermal Enhancement</h3><p>Improves visibility of thermal images.</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="feature"><h3>🛰 Satellite Vision</h3><p>Analyze infrared frames captured from remote sensing systems.</p></div>', unsafe_allow_html=True)
 with c2:
-    st.markdown('<div class="card"><h3>Mission Modes</h3><p>Rescue, surveillance and space observation modes.</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="feature"><h3>🌙 Night Intelligence</h3><p>Improve visibility in low-light and thermal scenes.</p></div>', unsafe_allow_html=True)
 with c3:
-    st.markdown('<div class="card"><h3>Download Output</h3><p>Save enhanced image for report and analysis.</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="feature"><h3>🚨 Rescue Assist</h3><p>Support emergency teams with clearer thermal visualization.</p></div>', unsafe_allow_html=True)
 
-st.markdown("## 🧠 Live Mission Demo")
+st.markdown('<div class="glass">', unsafe_allow_html=True)
+st.markdown("## 🔥 Infrared Image Processing Lab")
 
 mode = st.selectbox(
-    "Select Mission Mode",
-    ["Disaster Rescue Mission", "Border Surveillance Mission", "Satellite Thermal Analysis", "Night Vision Rescue"]
+    "Select Mission Type",
+    ["Lunar Thermal Scan", "Satellite Thermal Analysis", "Disaster Rescue Scan", "Night Surveillance Scan"]
 )
 
 uploaded_file = st.file_uploader("Upload Infrared / Thermal Image", type=["jpg", "jpeg", "png"])
@@ -96,54 +111,50 @@ if uploaded_file:
     col1, col2 = st.columns(2)
 
     with col1:
-        st.subheader("Original Thermal Image")
+        st.subheader("📡 Raw Infrared Input")
         st.image(image, use_container_width=True)
 
     with col2:
-        st.subheader("Enhanced Thermal Output")
+        st.subheader("🧠 Enhanced Thermal Output")
         st.image(colorized, use_container_width=True)
 
-    st.markdown("## 📊 Mission Report")
-    r1, r2, r3 = st.columns(3)
-    r1.metric("Thermal Clarity", "92%")
-    r2.metric("Alert Level", "Medium")
-    r3.metric("Mission Status", "Active")
+    st.markdown("## 📊 AI Mission Report")
+    r1, r2, r3, r4 = st.columns(4)
+    r1.metric("Mission Mode", mode)
+    r2.metric("Clarity Boost", "92%")
+    r3.metric("Alert Level", "Medium")
+    r4.metric("Status", "Processed")
 
-    st.success(f"Mission Mode: {mode}")
-    st.info("Possible Use Cases: Rescue operation, satellite monitoring, surveillance and disaster response.")
+    st.success("Infrared frame processed successfully.")
+    st.info("Next upgrade: AI-based human/vehicle detection using YOLO model.")
 
     result_img = Image.fromarray(colorized)
     buffer = BytesIO()
     result_img.save(buffer, format="PNG")
 
     st.download_button(
-        "Download Enhanced Output",
+        "⬇ Download Enhanced Mission Output",
         buffer.getvalue(),
-        "thermavision_ai_output.png",
+        "thermavision_output.png",
         "image/png"
     )
+else:
+    st.info("Upload a thermal image to start the mission scan.")
+
+st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown("""
-<div class="section">
-<h2>👥 Team</h2>
+<div class="glass">
+<h2>👥 Mission Team</h2>
 <p><b>Team Name:</b> AstroVision Coders</p>
 <p><b>Project Lead:</b> Vishal Kumar</p>
-<p><b>Domain:</b> AI, Image Processing, Remote Sensing</p>
+<p><b>Domain:</b> AI • Image Processing • Remote Sensing</p>
 </div>
 """, unsafe_allow_html=True)
 
 st.markdown("""
-<div class="section">
-<h2>📞 Contact</h2>
-<p><b>Email:</b> your-email@example.com</p>
-<p><b>GitHub:</b> github.com/your-username</p>
-<p><b>LinkedIn:</b> linkedin.com/in/your-profile</p>
-</div>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-<hr>
 <center>
-<p>© 2026 ThermaVision AI | Built for Hackathon Innovation</p>
+<br>
+<p>© 2026 ThermaVision AI | Space-Inspired Infrared Intelligence Platform</p>
 </center>
 """, unsafe_allow_html=True)
