@@ -15,7 +15,6 @@ st.markdown("""
     background:
     radial-gradient(circle at 15% 15%, rgba(0,255,255,0.25), transparent 20%),
     radial-gradient(circle at 85% 20%, rgba(167,139,250,0.25), transparent 22%),
-    radial-gradient(circle at 75% 75%, rgba(255,255,255,0.12), transparent 14%),
     linear-gradient(135deg, #020617, #02001f, #000000);
     color: white;
 }
@@ -118,36 +117,37 @@ if uploaded_file:
         st.subheader("🧠 Enhanced Thermal Output")
         st.image(colorized, use_container_width=True)
 
-st.markdown("## 📊 AI Mission Report")
+    st.markdown("## 📊 AI Mission Report")
 
-if mode == "Lunar Thermal Scan":
-    st.subheader("🌕 Lunar Surface Analysis")
-    st.success("Lunar thermal anomalies detected.")
-    st.info("Possible crater hotspot regions identified.")
-    alert = "Scientific"
+    if mode == "Lunar Thermal Scan":
+        st.subheader("🌕 Lunar Surface Analysis")
+        st.success("Lunar thermal anomalies detected.")
+        st.info("Possible crater hotspot regions identified.")
+        alert = "Scientific"
 
-elif mode == "Satellite Thermal Analysis":
-    st.subheader("🛰️ Satellite Thermal Mapping")
-    st.success("Thermal terrain analysis completed.")
-    st.info("High temperature regions detected.")
-    alert = "Moderate"
+    elif mode == "Satellite Thermal Analysis":
+        st.subheader("🛰️ Satellite Thermal Mapping")
+        st.success("Thermal terrain analysis completed.")
+        st.info("High temperature regions detected.")
+        alert = "Moderate"
 
-elif mode == "Disaster Rescue Scan":
-    st.subheader("🚨 Disaster Rescue Report")
-    st.success("Rescue priority analysis completed.")
-    st.warning("Possible human heat signatures found.")
-    alert = "High"
+    elif mode == "Disaster Rescue Scan":
+        st.subheader("🚨 Disaster Rescue Report")
+        st.success("Rescue priority analysis completed.")
+        st.warning("Possible human heat signatures found.")
+        alert = "High"
 
-else:
-    st.subheader("🌙 Night Surveillance Report")
-    st.success("Night surveillance scan completed.")
-    st.info("Suspicious thermal activity detected.")
-    alert = "Medium"
+    else:
+        st.subheader("🌙 Night Surveillance Report")
+        st.success("Night surveillance scan completed.")
+        st.info("Suspicious thermal activity detected.")
+        alert = "Medium"
 
-r1, r2, r3 = st.columns(3)
-r1.metric("Clarity Boost", "92%")
-r2.metric("Alert Level", alert)
-r3.metric("Status", "Processed")
+    r1, r2, r3 = st.columns(3)
+    r1.metric("Clarity Boost", "92%")
+    r2.metric("Alert Level", alert)
+    r3.metric("Status", "Processed")
+
     result_img = Image.fromarray(colorized)
     buffer = BytesIO()
     result_img.save(buffer, format="PNG")
@@ -158,6 +158,7 @@ r3.metric("Status", "Processed")
         "thermavision_output.png",
         "image/png"
     )
+
 else:
     st.info("Upload a thermal image to start the mission scan.")
 
