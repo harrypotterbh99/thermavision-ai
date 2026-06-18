@@ -15,42 +15,98 @@ st.set_page_config(page_title="ThermaVision AI", layout="wide")
 st.markdown("""
 <style>
 .stApp {
-    background: linear-gradient(135deg, #020617, #02001f, #000000);
-    color: white;
+    background: #071426;
+    color: #ffffff;
+}
+.navbar {
+    background: linear-gradient(90deg, #061a33, #0b2b52);
+    padding: 18px 30px;
+    border-bottom: 4px solid #ff8c00;
+    border-radius: 0 0 18px 18px;
+}
+.brand {
+    font-size: 34px;
+    font-weight: 900;
+}
+.brand span {
+    color: #ff8c00;
+}
+.nav-sub {
+    color: #cbd5e1;
+    font-size: 15px;
 }
 .hero {
-    padding: 35px;
-    border-radius: 25px;
-    background: linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.70)),
+    margin-top: 25px;
+    padding: 45px;
+    border-radius: 22px;
+    background:
+    linear-gradient(rgba(5, 18, 40, 0.72), rgba(5, 18, 40, 0.88)),
     url("https://images.unsplash.com/photo-1446776811953-b23d57bd21aa");
     background-size: cover;
     background-position: center;
-    border: 1px solid rgba(0,255,255,.35);
-    box-shadow: 0 0 50px rgba(0,255,255,.25);
+    border: 1px solid rgba(255,255,255,0.15);
 }
 .title {
-    font-size: 55px;
+    font-size: 52px;
     font-weight: 900;
-    color: #00eaff;
+}
+.title span {
+    color: #ff8c00;
 }
 .card {
     padding: 20px;
+    border-radius: 16px;
+    background: #0b213f;
+    border-left: 5px solid #ff8c00;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+}
+.section-box {
+    padding: 25px;
     border-radius: 18px;
-    background: rgba(255,255,255,.08);
-    border: 1px solid rgba(255,255,255,.18);
+    background: #0b213f;
+    border: 1px solid rgba(255,255,255,0.12);
+    margin-top: 20px;
+}
+.footer {
+    text-align: center;
+    padding: 20px;
+    color: #94a3b8;
 }
 </style>
 """, unsafe_allow_html=True)
 
 st.markdown("""
+<div class="navbar">
+    <div class="brand">ThermaVision <span>AI</span></div>
+    <div class="nav-sub">Space-Inspired Infrared Intelligence Platform</div>
+</div>
+
 <div class="hero">
-    <div class="title">🛰️ ThermaVision AI</div>
-    <h3>Infrared Image Enhancement + Thermal Hotspot Detection</h3>
-    <p>For rescue, surveillance, satellite thermal analysis and disaster response.</p>
+    <div class="title">Infrared Image <span>Analysis System</span></div>
+    <h3>Thermal Enhancement + Hotspot Detection + Mission Report</h3>
+    <p>
+        A mission-focused platform for thermal image enhancement, hotspot detection,
+        risk analysis and PDF report generation for rescue, surveillance and remote sensing.
+    </p>
 </div>
 """, unsafe_allow_html=True)
 
-st.write("")
+st.markdown("## Mission Applications")
+
+a, b, c = st.columns(3)
+with a:
+    st.markdown('<div class="card"><h3>🛰 Satellite Analysis</h3><p>Detect high-temperature zones from thermal imagery.</p></div>', unsafe_allow_html=True)
+with b:
+    st.markdown('<div class="card"><h3>🚨 Rescue Operation</h3><p>Identify possible heat signatures and risk zones.</p></div>', unsafe_allow_html=True)
+with c:
+    st.markdown('<div class="card"><h3>🌙 Night Surveillance</h3><p>Improve visibility in low-light thermal scenes.</p></div>', unsafe_allow_html=True)
+
+st.markdown("""
+<div class="section-box">
+<h2>Thermal Processing Lab</h2>
+<p>Upload an infrared image to start enhancement, hotspot detection and mission report generation.</p>
+</div>
+""", unsafe_allow_html=True)
 
 mode = st.selectbox(
     "Select Mission Mode",
@@ -146,13 +202,11 @@ if uploaded_file:
         st.markdown('<div class="card">', unsafe_allow_html=True)
         st.subheader("📡 Original Input")
         st.image(image, use_container_width=True)
-        st.markdown('</div>', unsafe_allow_html=True)
 
     with col2:
         st.markdown('<div class="card">', unsafe_allow_html=True)
         st.subheader("🔥 AI Hotspot Detection Output")
         st.image(result, use_container_width=True)
-        st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown("## 📊 AI Mission Report")
 
@@ -195,3 +249,9 @@ if uploaded_file:
 
 else:
     st.info("Upload a thermal image to start analysis.")
+
+st.markdown("""
+<div class="footer">
+© 2026 ThermaVision AI | ISRO-inspired student innovation project
+</div>
+""", unsafe_allow_html=True)
